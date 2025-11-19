@@ -1,126 +1,130 @@
-🍅 Tomato Ripeness Detection
+# 🍅 Tomato Ripeness Detection
 
-Mô tả dự án:
-Dự án sử dụng Faster R-CNN để phát hiện các quả cà chua trong hình ảnh/video, kết hợp với MobileNetV2 fine-tune để phân loại độ chín của từng quả:
+A full AIoT pipeline for detecting and classifying tomato ripeness using:
 
-unripe – chưa chín
+* **Faster R-CNN** → tomato object detection
+* **MobileNetV2 (fine-tuned)** → ripeness classification
+* **Real-time webcam demo** → bounding boxes + labels + confidence
 
-semi-ripe – chín một phần
+Ripeness levels:
 
-fully-ripe – chín hoàn toàn
+* **unripe** (green)
+* **semi-ripe** (orange)
+* **fully-ripe** (red)
 
-Hỗ trợ realtime webcam demo để quan sát kết quả trực tiếp.
-Bạn cần tự tạo thư mục data theo cấu trúc dưới đây
+This project supports training, preprocessing, conversion from COCO annotations, and real-time inference.
 
-📁 Cấu trúc thư mục
+---
 
+## 📁 Project Structure
+
+```
 project_root/
 │
-
 ├─ data/
-
-│   ├─ raw/                 # ảnh gốc + annotation COCO
-
-│   └─ processed/           # ảnh crop cho classifier 3 lớp
-
+│   ├─ raw/                    # Original images + COCO annotations
+│   └─ processed/              # Cropped images for 3-class classification
 │
-
 ├─ models/
-
-│   ├─ mobilenet_tomato_classifier.h5        # model MobileNetV2 ban đầu
-
-│   └─ mobilenet_tomato_finetune.h5         # model fine-tune
-
+│   ├─ mobilenet_tomato_classifier.h5     # Base MobileNetV2
+│   └─ mobilenet_tomato_finetune.h5       # Fine-tuned MobileNetV2
 │
-
-├─ notebooks/
-
-│   ├─ 01-training.ipynb
-
-│   ├─ 02-train_mobilenet.ipynb
-
-│   └─ 03-train_mobilenet_finetune.ipynb
-
+├─ notebooks/               
+│   ├─ MobileNet_V2_training.ipynb           # MobileNetV2 base training 
 │
-
 ├─ src/
-
-│   └─ convert_coco_to_classification.py
-
+│    ├─ check.py                           # Check the labels
+│   └─ convert_coco_to_classification.py  # Convert COCO → cropped dataset
 │
-
-├─demos/
-
-│   ├─ camera_demo.py                         # MobileNetV2 webcam demo
-
-│   └─ camera_demo_fasterrcnn.py             # Faster R-CNN + MobileNetV2
-
+├─ demos/
+│   ├─ camera_demo.py                     # MobileNetV2 webcam classifier
+│   └─ camera_demo_fasterrcnn.py          # Faster R-CNN + MobileNetV2 demo
 │
-
 └─ requirements.txt
+```
 
+---
 
-⚡ Yêu cầu môi trường
+## ⚡ Environment Requirements
 
-Python 3.8+
+* Python **3.8+**
+* TensorFlow **2.x**
+* PyTorch + **torchvision**
+* OpenCV
+* Pillow
 
-TensorFlow 2.x
+### Install:
 
-PyTorch + torchvision
-
-OpenCV
-
-Pillow
-
-Cài đặt các thư viện:
-
+```bash
 pip install tensorflow torch torchvision opencv-python pillow
+```
 
-📝 Hướng dẫn sử dụng:
+---
 
-1️⃣ Train model MobileNetV2 (tuỳ chọn)
+## 📝 Usage Guide
 
-Chạy notebook fine-tune:
+### **1️⃣ Train MobileNetV2 Classifier (optional)**
 
-jupyter notebook notebooks/03-train_mobilenet_finetune.ipynb
+Open the fine-tuning notebook:
 
+```bash
+jupyter notebook notebooks/MobileNet_V2_training.ipynb
+```
 
-Model sẽ được lưu tại:
+The 2 trained model will be saved to the directory and we will use:
 
+```
 models/mobilenet_tomato_finetune.h5
+```
 
-2️⃣ Chạy webcam demo với MobileNetV2
+---
+
+### **2️⃣ Run Webcam Demo – MobileNetV2 Only**
+
+```bash
 python demos/camera_demo.py
+```
 
+This runs:
 
-Mở webcam, hiển thị label + confidence cho toàn frame
+* Webcam livestream
+* Full-frame classification
+* Displays predicted ripeness + confidence
 
-3️⃣ Chạy webcam demo với Faster R-CNN + MobileNetV2
+---
+
+### **3️⃣ Run Webcam Demo – Faster R-CNN + MobileNetV2**
+
+```bash
 python demos/camera_demo_fasterrcnn.py
+```
 
+Pipeline:
 
-Phát hiện từng quả cà chua (bounding box)
+1. Faster R-CNN detects tomato bounding boxes
+2. Each crop is classified with MobileNetV2
+3. Bounding boxes + label + confidence displayed in real-time
+4. Press **q** to quit
 
-Crop → predict độ chín bằng MobileNetV2
+---
 
-Hiển thị trực tiếp bounding box + label + confidence
+## 💡 Performance & Optimization Tips
 
-Nhấn q để thoát
+* Use **good lighting** → improves detection accuracy
+* If FPS is low → **resize frame** before sending to Faster R-CNN
+* For highest accuracy → fine-tune Faster R-CNN on your tomato dataset
+* Convert model to **TensorFlow Lite** for IoT devices (optional)
 
-💡 Gợi ý tối ưu
+---
 
-Giữ ánh sáng tốt → giúp Faster R-CNN detect chính xác
+## 📚 Resources
 
-Nếu FPS quá thấp, resize frame trước khi detect
+* Tomato dataset: tomatOD
+* MobileNetV2 pretrained on ImageNet
+* Faster R-CNN pretrained on COCO
 
-Có thể fine-tune Faster R-CNN với dataset cà chua để tăng độ chính xác
+---
 
-📚 Tài nguyên
+## 👤 Author
 
-Dataset cà chua: [Kaggle / GitHub]
-
-MobileNetV2 pre-trained trên ImageNet
-
-Faster R-CNN pre-trained COCO
-
-
+AIoT project for real-time tomato ripeness classification & detection.
