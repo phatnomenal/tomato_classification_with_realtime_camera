@@ -10,6 +10,7 @@ semi-ripe – chín một phần
 fully-ripe – chín hoàn toàn
 
 Hỗ trợ realtime webcam demo để quan sát kết quả trực tiếp.
+Bạn cần tự tạo thư mục data theo cấu trúc dưới đây
 
 📁 Cấu trúc thư mục
 
