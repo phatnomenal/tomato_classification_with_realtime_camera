@@ -1,6 +1,6 @@
 # 🍅 Tomato Ripeness Detection
 
-A full AIoT pipeline for detecting and classifying tomato ripeness using:
+A full pipeline for detecting and classifying tomato ripeness using:
 
 * **Faster R-CNN** → tomato object detection
 * **MobileNetV2 (fine-tuned)** → ripeness classification
