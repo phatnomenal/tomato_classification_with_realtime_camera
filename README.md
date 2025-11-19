@@ -12,6 +12,7 @@ fully-ripe – chín hoàn toàn
 Hỗ trợ realtime webcam demo để quan sát kết quả trực tiếp.
 
 📁 Cấu trúc thư mục
+
 project_root/
 │
 ├─ data/
@@ -35,6 +36,7 @@ project_root/
 │   └─ camera_demo_fasterrcnn.py             # Faster R-CNN + MobileNetV2
 │
 └─ requirements.txt
+
 
 ⚡ Yêu cầu môi trường
 
