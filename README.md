@@ -15,26 +15,42 @@ Hỗ trợ realtime webcam demo để quan sát kết quả trực tiếp.
 
 project_root/
 │
+
 ├─ data/
+
 │   ├─ raw/                 # ảnh gốc + annotation COCO
+
 │   └─ processed/           # ảnh crop cho classifier 3 lớp
+
 │
+
 ├─ models/
+
 │   ├─ mobilenet_tomato_classifier.h5        # model MobileNetV2 ban đầu
+
 │   └─ mobilenet_tomato_finetune.h5         # model fine-tune
+
 │
+
 ├─ notebooks/
+
 │   ├─ 01-training.ipynb
+
 │   ├─ 02-train_mobilenet.ipynb
+
 │   └─ 03-train_mobilenet_finetune.ipynb
+
 │
+
 ├─ src/
 │   └─ convert_coco_to_classification.py
 │
-├─ demos/
+
+├─demos/
 │   ├─ camera_demo.py                         # MobileNetV2 webcam demo
 │   └─ camera_demo_fasterrcnn.py             # Faster R-CNN + MobileNetV2
 │
+
 └─ requirements.txt
 
 
@@ -100,6 +116,4 @@ MobileNetV2 pre-trained trên ImageNet
 
 Faster R-CNN pre-trained COCO
 
-📝 License
 
-MIT License (hoặc tuỳ bạn đặt)
