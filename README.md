@@ -76,7 +76,8 @@ Cài đặt các thư viện:
 
 pip install tensorflow torch torchvision opencv-python pillow
 
-📝 Hướng dẫn sử dụng
+📝 Hướng dẫn sử dụng:
+
 1️⃣ Train model MobileNetV2 (tuỳ chọn)
 
 Chạy notebook fine-tune:
