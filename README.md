@@ -43,12 +43,17 @@ project_root/
 │
 
 ├─ src/
+
 │   └─ convert_coco_to_classification.py
+
 │
 
 ├─demos/
+
 │   ├─ camera_demo.py                         # MobileNetV2 webcam demo
+
 │   └─ camera_demo_fasterrcnn.py             # Faster R-CNN + MobileNetV2
+
 │
 
 └─ requirements.txt
