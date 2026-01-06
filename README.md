@@ -39,7 +39,7 @@ project_root/
 ├─ demos/
 │   ├─ camera_demo.py                     # MobileNetV2 webcam classifier
 │   └─ camera_demo_fasterrcnn.py          # Faster R-CNN + MobileNetV2 demo
-├─ dáhboard/
+├─ dashboard/
 │   ├─ app.py             # Flask application
 │   └─ camera.py          # setup camera
 │
