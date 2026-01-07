@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tomato Detection Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .controls {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px 16px;
+            margin: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .start {
+            background: #28a745;
+            color: white;
+        }
+
+        .stop {
+            background: #dc3545;
+            color: white;
+        }
+
+        img {
+            width: 100%;
+            border-radius: 8px;
+            background: black;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th,
+        td {
+            border-bottom: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background: #f0f0f0;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>🍅 Tomato Detection Dashboard</h1>
+
+    <div class="container">
+
+        <!-- CAMERA VIEW -->
+        <div class="card">
+            <h3>Live Camera</h3>
+
+            <div class="controls">
+                <button class="start" onclick="startCamera()">Start</button>
+                <button class="stop" onclick="stopCamera()">Stop</button>
+            </div>
+
+            <img id="video" src="" alt="Camera stream will appear here">
+        </div>
+
+        <!-- LOG TABLE -->
+        <div class="card">
+            <h3>Detection Logs</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Class</th>
+                        <th>Confidence</th>
+                    </tr>
+                </thead>
+                <tbody id="logTable">
+                    <tr>
+                        <td colspan="3">No logs</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="footer">
+                <button onclick="downloadCSV()">Download CSV</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let logInterval = null;
+
+        function startCamera() {
+            fetch('/start_cam')
+                .then(() => {
+                    const video = document.getElementById("video");
+                    video.src = "/video_feed";
+                    startLogs();
+                });
+        }
+
+        function stopCamera() {
+            fetch('/stop_cam')
+                .then(() => {
+                    const video = document.getElementById("video");
+                    video.src = "";
+                    stopLogs();
+                });
+        }
+
+        function startLogs() {
+            loadLogs();
+            logInterval = setInterval(loadLogs, 2000);
+        }
+
+        function stopLogs() {
+            if (logInterval) {
+                clearInterval(logInterval);
+                logInterval = null;
+            }
+        }
+
+        async function loadLogs() {
+            try {
+                const res = await fetch('/api/logs');
+                const data = await res.json();
+
+                const table = document.getElementById("logTable");
+                table.innerHTML = "";
+
+                if (!data || data.length === 0) {
+                    table.innerHTML =
+                        "<tr><td colspan='3'>No logs</td></tr>";
+                    return;
+                }
+
+                data.forEach(log => {
+                    const row = `
+                <tr>
+                    <td>${log.Timestamp}</td>
+                    <td>${log.Class}</td>
+                    <td>${parseFloat(log.Confidence).toFixed(2)}</td>
+                </tr>
+            `;
+                    table.innerHTML += row;
+                });
+            } catch (err) {
+                console.error("Error loading logs:", err);
+            }
+        }
+
+        function downloadCSV() {
+            window.location.href = "/download_csv";
+        }
+    </script>
+
+</body>
+
+</html>
